@@ -1,16 +1,18 @@
+import csvParser.CsvParser;
+
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        var file = "rawData\\basicprogramming_2.csv";
+        var values = CsvParser.readCSVFile(file);
+        var topics = CsvParser.parseToTopic(values);
+        var students = CsvParser.parseToStudents(values);
+
+        for(var student : students) {
+            System.out.println(student.toString());
+        }
+        System.out.println(topics.toString());
+
     }
 }
 
-/*
-
-  Student: хранит информацию о студенте (имя и фамилия, возраст, группа).
-  Course: описывает курс, включающий темы и задания с возможными максимальными баллами.
-  Topic: представляет отдельную тему курса (например, "Ветвления", "Циклы").
-  Task: описывает задание с полями для типа задания (упражнение, домашнее задание, семинар), а также возможные баллы и сложность.
-  Performance: хранит данные о результатах выполнения заданий, связывая студента, задание и оценку.
-  Analysis (интерфейс): определяет методы для расчета статистики успеваемости по возрасту, такие как средний балл для определенной возрастной группы.
-
- */
