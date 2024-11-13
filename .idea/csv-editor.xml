@@ -3,14 +3,7 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="\basicprogramming_2.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value=";" />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\java-rtf.csv">
+        <entry key="\rawData\basicprogramming_2.csv">
           <value>
             <Attribute>
               <option name="separator" value=";" />
