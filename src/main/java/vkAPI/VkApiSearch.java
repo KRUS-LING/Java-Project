@@ -11,14 +11,10 @@ import java.net.http.HttpResponse;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import io.github.cdimascio.dotenv.Dotenv;
+
+import static vkAPI.AccessToken.getAccessToken;
 
 public class VkApiSearch {
-
-    public static String getAccessToken() {
-        Dotenv dotenv = Dotenv.load();
-        return dotenv.get("TOKEN");
-    }
 
     private static final String ACCESS_TOKEN = getAccessToken();
 
