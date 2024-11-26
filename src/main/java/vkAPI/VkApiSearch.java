@@ -11,8 +11,8 @@ import java.net.http.HttpResponse;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-
 import static vkAPI.AccessToken.getAccessToken;
+
 
 public class VkApiSearch {
 
