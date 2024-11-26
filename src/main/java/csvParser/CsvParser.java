@@ -7,12 +7,10 @@ import com.opencsv.exceptions.CsvException;
 import models.Student;
 import models.Topic;
 import vkAPI.VkApiSearch;
-
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.charset.Charset;
 import java.util.*;
+
 
 public class CsvParser {
     public static String Homework;
@@ -74,7 +72,12 @@ public class CsvParser {
 
             String[] line;
             while ((line = reader.readNext()) != null) {
-                students.add(createStudent(line, topicNames, tasks, taskMaxScore, topicTask, maxTotalScore));
+                try {
+                    students.add(createStudent(line, topicNames, tasks, taskMaxScore, topicTask, maxTotalScore));
+                } catch (Exception e) {
+                    System.out.println("Ошибка при создании студента из строки: " + Arrays.toString(line));
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -89,15 +92,26 @@ public class CsvParser {
         String ulearnID = studentInfo[1];
         String group = studentInfo[2];
         String age = VkApiSearch.getAgeFromStudent(name);
+        int totalExercisePoints = 10;
+        int totalHomeworkPoints = 0;
+        int totalQuizPoints = 0;
+
 
 
         int totalScore = Integer.parseInt(studentInfo[3]) +
                 Integer.parseInt(studentInfo[4]) +
                 Integer.parseInt(studentInfo[5]);
 
-        Student student = new Student(name, ulearnID, group, totalScore, maxTotalScore, age);
-
-
+        Student student = new Student(
+                name,
+                ulearnID,
+                group,
+                totalScore,
+                maxTotalScore,
+                age,
+                totalExercisePoints,
+                totalHomeworkPoints,
+                totalQuizPoints);
 
         for (String topicName : topicNames) {
             int[] scores = new int[3];
@@ -114,17 +128,18 @@ public class CsvParser {
 
                     if (Exercise.equals(taskType)) {
                         scores[0] += points;
+                        totalExercisePoints += points;
                     } else if (Homework.equals(taskType)) {
                         scores[1] += points;
+                        totalHomeworkPoints += points;
                     } else if (Quiz.equals(taskType)) {
                         scores[2] += points;
+                        totalQuizPoints += points;
                     }
                 }
             }
 
-            int maxExercisePoints = 0;
-            int maxHomeworkPoints = 0;
-            int maxControlQuestionsPoints = 0;
+            int[] maxScores = new int[3];
 
             if (taskInd != null) {
                 for (Integer taskIndex : taskInd) {
@@ -132,17 +147,21 @@ public class CsvParser {
                     int maxScore = taskMaxScore.getOrDefault(taskIndex, 0);
 
                     if (Exercise.equals(taskType)) {
-                        maxExercisePoints = maxScore;
+                        maxScores[0] += maxScore;
                     } else if (Homework.equals(taskType)) {
-                        maxHomeworkPoints = maxScore;
+                        maxScores[1] += maxScore;
                     } else if (Quiz.equals(taskType)) {
-                        maxControlQuestionsPoints = maxScore;
+                        maxScores[2] += maxScore;
                     }
                 }
             }
 
             student.addTopic(new Topic(topicName, scores[0], scores[1], scores[2],
-                    maxExercisePoints, maxHomeworkPoints, maxControlQuestionsPoints));
+                    maxScores[0], maxScores[1], maxScores[2]));
+
+            student.setExerciseScore(totalExercisePoints);
+            student.setHomeworkScore(totalHomeworkPoints);
+            student.setQuizScore(totalQuizPoints);
         }
 
         return student;
