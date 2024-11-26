@@ -6,6 +6,7 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
 import models.Student;
 import models.Topic;
+import vkAPI.VkApiSearch;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -87,12 +88,14 @@ public class CsvParser {
         String name = studentInfo[0];
         String ulearnID = studentInfo[1];
         String group = studentInfo[2];
+        String age = VkApiSearch.getAgeFromStudent(name);
+
 
         int totalScore = Integer.parseInt(studentInfo[3]) +
                 Integer.parseInt(studentInfo[4]) +
                 Integer.parseInt(studentInfo[5]);
 
-        Student student = new Student(name, ulearnID, group, totalScore, maxTotalScore);
+        Student student = new Student(name, ulearnID, group, totalScore, maxTotalScore, age);
 
 
 
@@ -137,26 +140,11 @@ public class CsvParser {
                     }
                 }
             }
-            int totalScoreTopic = scores[0] + scores[1] + scores[2];
-            int maxScoreTopic = maxExercisePoints + maxHomeworkPoints + maxControlQuestionsPoints;
 
             student.addTopic(new Topic(topicName, scores[0], scores[1], scores[2],
                     maxExercisePoints, maxHomeworkPoints, maxControlQuestionsPoints));
         }
 
         return student;
-    }
-
-    public static void main(String[] args) {
-        String filePath = "rawData/java-rtf.csv";
-        try {
-            System.setOut(new PrintStream(System.out, true, Charset.defaultCharset()));
-            List<Student> students = CSVToStudents(filePath);
-            for (Student student : students) {
-                System.out.println(student.toString());
-            }
-        } catch (IOException | CsvException e) {
-            System.out.println("Ошибка при чтении CSV: " + e.getMessage());
-        }
     }
 }

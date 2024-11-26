@@ -7,16 +7,17 @@ public class Student {
     private final String name;
     private final String ulearnID;
     private final String group;
-    //    private final int age;
+    private final String age;
     private final int totalScore;
     private final int maxTotalScore;
     private final List<Topic> topics;
 
 
-    public Student(String name, String ulearnId, String group, int score, int maxTotalScore) {
+    public Student(String name, String ulearnId, String group, int score, int maxTotalScore, String age) {
         this.ulearnID = ulearnId;
         this.name = name;
         this.group = group;
+        this.age = age;
         this.totalScore = score;
         this.maxTotalScore = maxTotalScore;
         this.topics = new ArrayList<>();
@@ -50,15 +51,19 @@ public class Student {
         return maxTotalScore;
     }
 
+    public String getAge() {
+        return age;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Студент: ").append(name)
-                .append("\nUlearnID: ").append(ulearnID)
-                .append("\nГруппа: ").append(group)
-                .append("\nБалл за курс: ").append(totalScore)
-                .append("\nМаксимальный балл: ").append(maxTotalScore);
-        sb.append("\nВозраст типо ... ;)");
+        sb.append("Студент: ").append(getName())
+                .append("\nUlearnID: ").append(getUlearnId())
+                .append("\nГруппа: ").append(getGroup())
+                .append("\nБалл за курс: ").append(getTotalScore())
+                .append("\nМаксимальный балл: ").append(getMaxTotalScore())
+                .append("\nВозраст: ").append(getAge());
         sb.append("\nТемы:\n");
         for (Topic topic : topics) {
             sb.append("\t").append(topic.toString()).append("\n");
