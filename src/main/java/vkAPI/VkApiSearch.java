@@ -50,7 +50,9 @@ public class VkApiSearch {
 
                 // Проверка, есть ли результаты поиска
                 if (!itemsArray.isEmpty()) {
-                    JsonObject userInfo = itemsArray.get(0).getAsJsonObject(); // Берем первого найденного пользователя
+                    JsonObject userInfo = itemsArray
+                            .get(0)
+                            .getAsJsonObject(); // Берем первого найденного пользователя
 
                     // Извлекаем дату рождения
                     if (userInfo.has("bdate")) {
@@ -59,9 +61,9 @@ public class VkApiSearch {
                         if (age > 0) {
 //                            String vkName = userInfo.getString("first_name") + " " + userInfo.getString("last_name");
                             return String.valueOf(age);
-                        } else return "дата рождения указана без года — " + birthDate;
+                        } else return "дата рождения не указана";
                     } else {
-                        return "дата рождения студента не указана";
+                        return "дата рождения не указана";
                     }
                 } else {
                     return "пользователь не найден или не зарегистрирован в вк";
@@ -89,7 +91,7 @@ public class VkApiSearch {
             // Вычисляем период между датами
             Period period = Period.between(birth, now);
 
-            return period.getYears();
+            return period.getYears() - 1;
         } catch (Exception e) {
             System.out.println("Ошибка при вычислении возраста: " + e.getMessage());
             return -1;
