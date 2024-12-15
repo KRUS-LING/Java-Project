@@ -5,9 +5,11 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
+import java.awt.*;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -57,6 +59,10 @@ public class PieChartDrawer {
         plot.setLabelOutlinePaint(null); // Убираем границу у меток
         plot.setLabelShadowPaint(null); // Убираем тени у меток
 
+        // Изменяем шрифт текста в легенде
+        LegendTitle legend = chart.getLegend();
+        legend.setItemFont(new Font("Arial", Font.BOLD, 14)); // Шрифт: Arial, полужирный, размер 16
+
         // Отображаем диаграмму в окне
         JFrame frame = new JFrame("Круговая диаграмма");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -67,6 +73,7 @@ public class PieChartDrawer {
         frame.setLocationRelativeTo(null);
 
         // Отображаем окно
+        frame.setSize(800, 600);
         frame.setVisible(true);
     }
 }

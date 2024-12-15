@@ -4,12 +4,17 @@ import db.DBRepository;
 import db.models.Student;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 public class MainWindow {
+
+    private static final Color defaultColor = new Color(151, 172, 209);
 
     public static void main(String[] args) {
         // Подключаемся к базе данных
@@ -32,24 +37,33 @@ public class MainWindow {
             // Создаем главное окно
             JFrame mainFrame = new JFrame("Главное окно");
             mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            mainFrame.setSize(400, 200);
+            mainFrame.setSize(500, 200);
             mainFrame.setLayout(new BorderLayout());
+            mainFrame.getContentPane().setBackground(new Color(240, 240, 240)); // Фон окна
 
             // Добавляем заголовок
             JLabel titleLabel = new JLabel("Выберите тип графика для отображения", SwingConstants.CENTER);
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+            titleLabel.setForeground(Color.DARK_GRAY);
             mainFrame.add(titleLabel, BorderLayout.NORTH);
+            titleLabel.setBorder(new EmptyBorder(20, 10, 20, 10));
 
             // Создаем панель для кнопок
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new FlowLayout());
+            buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+            buttonPanel.setBackground(new Color(240, 240, 240));
 
             // Создаем кнопки
-            JButton pieChartButton = new JButton("Круговая диаграмма");
-            JButton lineChartButton = new JButton("Линейный график");
+            RoundedButton pieChartButton = new RoundedButton("Круговая диаграмма", defaultColor);
+            RoundedButton lineChartButton = new RoundedButton("Линейный график", defaultColor);
+
+            // Устанавливаем одинаковый размер для всех кнопок
+            Dimension buttonSize = new Dimension(180, 38); // Ширина = 200, Высота = 40
+            pieChartButton.setPreferredSize(buttonSize);
+            lineChartButton.setPreferredSize(buttonSize);
 
             // Добавляем действия для кнопок
-            pieChartButton.addActionListener(e -> {
+            pieChartButton.addActionListener(_ -> {
                 // Открываем круговую диаграмму
                 PieChartDrawer.drawPieChart(studentsFromDB);
             });
@@ -78,5 +92,19 @@ public class MainWindow {
             // Закрываем соединение с базой данных
             DBRepository.disconnect();
         }
+    }
+
+    private static void addHoverEffect(RoundedButton button, Color hoverColor, Color defaultColor) {
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(hoverColor);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(defaultColor);
+            }
+        });
     }
 }

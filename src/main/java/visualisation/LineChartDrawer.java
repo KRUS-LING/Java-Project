@@ -12,6 +12,10 @@ import java.util.List;
 
 public class LineChartDrawer {
 
+    private static final Color buttonColor = new Color(151, 172, 209);
+    private static final Color hoverColor = buttonColor.darker();
+    private static final Color pressedColor = hoverColor.darker();
+
     public static void drawLineCharts(List<Student> students) {
         // Создаем 4 отдельных набора данных для каждого графика
         DefaultCategoryDataset exercisesDataset = new DefaultCategoryDataset();
@@ -35,8 +39,8 @@ public class LineChartDrawer {
             if (!student.getAge().isEmpty() && !student.getAge().equals("пользователь не найден")) {
                 String age = student.getAge();
                 exercisesDataset.addValue(student.getExerciseScore(), "Упражнения", age);
-                homeworkDataset.addValue(student.getHomeworkScore(), "Домашние задания", age);
-                quizDataset.addValue(student.getQuizScore(), "Викторины", age);
+                homeworkDataset.addValue(student.getHomeworkScore(), "Практики", age);
+                quizDataset.addValue(student.getQuizScore(), "Контрольные вопросы", age);
                 totalScoreDataset.addValue(student.getTotalScore(), "Общий балл", age);
             }
         }
@@ -47,11 +51,11 @@ public class LineChartDrawer {
                 "Возраст", "Баллы", exercisesDataset);
 
         JFreeChart homeworkChart = ChartFactory.createLineChart(
-                "Зависимость баллов по домашним заданиям от возраста студентов",
+                "Зависимость баллов по практикам от возраста студентов",
                 "Возраст", "Баллы", homeworkDataset);
 
         JFreeChart quizChart = ChartFactory.createLineChart(
-                "Зависимость баллов по викторинам от возраста студентов",
+                "Зависимость баллов по контрольным вопросам от возраста студентов",
                 "Возраст", "Баллы", quizDataset);
 
         JFreeChart totalScoreChart = ChartFactory.createLineChart(
@@ -66,11 +70,32 @@ public class LineChartDrawer {
         // Создаем панель вкладок
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Добавляем графики в вкладки
+        // Добавляем графики во вкладки
         tabbedPane.addTab("Упражнения", new ChartPanel(exercisesChart));
-        tabbedPane.addTab("Домашние задания", new ChartPanel(homeworkChart));
-        tabbedPane.addTab("Викторины", new ChartPanel(quizChart));
+        tabbedPane.addTab("Практики", new ChartPanel(homeworkChart));
+        tabbedPane.addTab("Контрольные вопросы", new ChartPanel(quizChart));
         tabbedPane.addTab("Общий балл", new ChartPanel(totalScoreChart));
+
+        // Создаем панель для кнопок
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+        buttonPanel.setBackground(new Color(240, 240, 240));
+
+        // Создаем кнопки
+        JButton closeButton = new RoundedButton("Закрыть", buttonColor);
+
+        // Устанавливаем одинаковый размер для всех кнопок
+        Dimension buttonSize = new Dimension(150, 40); // Ширина = 150, Высота = 40
+        closeButton.setPreferredSize(buttonSize);
+
+        // Добавляем действия для кнопки
+        closeButton.addActionListener(e -> mainFrame.dispose());
+
+        // Добавляем кнопки на панель
+        buttonPanel.add(closeButton);
+
+        // Добавляем панель с кнопками в основное окно
+        mainFrame.add(buttonPanel, BorderLayout.SOUTH);
 
         // Добавляем панель с вкладками на основное окно
         mainFrame.add(tabbedPane, BorderLayout.CENTER);
