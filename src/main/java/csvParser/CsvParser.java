@@ -107,7 +107,6 @@ public class CsvParser {
                 ulearnID,
                 group,
                 totalScore,
-                maxTotalScore,
                 age,
                 totalExercisePoints,
                 totalHomeworkPoints,
