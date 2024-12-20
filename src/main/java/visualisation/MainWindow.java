@@ -35,7 +35,7 @@ public class MainWindow {
             System.out.println("Количество студентов с указанным возрастом: " + studentsWithAge.size());
 
             // Создаем главное окно
-            JFrame mainFrame = new JFrame("Главное окно");
+            JFrame mainFrame = new JFrame("Анализ студентов по возрасту");
             mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             mainFrame.setSize(500, 200);
             mainFrame.setLayout(new BorderLayout());

@@ -59,7 +59,6 @@ public class VkApiSearch {
                         String birthDate = userInfo.get("bdate").getAsString();
                         int age = calculateAge(birthDate);
                         if (age > 0) {
-//                            String vkName = userInfo.getString("first_name") + " " + userInfo.getString("last_name");
                             return String.valueOf(age);
                         } else return "дата рождения не указана";
                     } else {
@@ -77,7 +76,7 @@ public class VkApiSearch {
         }
     }
 
-    public static int calculateAge(String birthDate) {
+    private static int calculateAge(String birthDate) {
         try {
             // Преобразуем строку с датой в объект LocalDate
             String[] dateParts = birthDate.split("\\.");
@@ -91,7 +90,7 @@ public class VkApiSearch {
             // Вычисляем период между датами
             Period period = Period.between(birth, now);
 
-            return period.getYears() - 1;
+            return period.getYears() - 1; // Добавляем -1, тк выгрузка за прошлый год
         } catch (Exception e) {
             System.out.println("Ошибка при вычислении возраста: " + e.getMessage());
             return -1;
