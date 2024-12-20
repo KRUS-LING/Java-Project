@@ -50,18 +50,19 @@ public class VkApiSearch {
 
                 // Проверка, есть ли результаты поиска
                 if (!itemsArray.isEmpty()) {
-                    JsonObject userInfo = itemsArray.get(0).getAsJsonObject(); // Берем первого найденного пользователя
+                    JsonObject userInfo = itemsArray
+                            .get(0)
+                            .getAsJsonObject(); // Берем первого найденного пользователя
 
                     // Извлекаем дату рождения
                     if (userInfo.has("bdate")) {
                         String birthDate = userInfo.get("bdate").getAsString();
                         int age = calculateAge(birthDate);
                         if (age > 0) {
-//                            String vkName = userInfo.getString("first_name") + " " + userInfo.getString("last_name");
                             return String.valueOf(age);
-                        } else return "дата рождения указана без года — " + birthDate;
+                        } else return "дата рождения не указана";
                     } else {
-                        return "дата рождения студента не указана";
+                        return "дата рождения не указана";
                     }
                 } else {
                     return "пользователь не найден или не зарегистрирован в вк";
@@ -75,7 +76,7 @@ public class VkApiSearch {
         }
     }
 
-    public static int calculateAge(String birthDate) {
+    private static int calculateAge(String birthDate) {
         try {
             // Преобразуем строку с датой в объект LocalDate
             String[] dateParts = birthDate.split("\\.");
@@ -89,7 +90,7 @@ public class VkApiSearch {
             // Вычисляем период между датами
             Period period = Period.between(birth, now);
 
-            return period.getYears();
+            return period.getYears() - 1; // Добавляем -1, тк выгрузка за прошлый год
         } catch (Exception e) {
             System.out.println("Ошибка при вычислении возраста: " + e.getMessage());
             return -1;

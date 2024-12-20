@@ -1,6 +1,7 @@
 package db;
 
-import models.Student;
+import db.models.Student;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,6 @@ public class DBRepository {
                     ulearnID TEXT,
                     studentGroup TEXT,
                     totalScore INTEGER,
-                    maxTotalScore INTEGER,
                     age TEXT,
                     exerciseScore INTEGER,
                     homeworkScore INTEGER,
@@ -61,8 +61,8 @@ public class DBRepository {
     // Сохранение студентов в базу данных
     public static void saveStudent(List<Student> students) {
         String sql = """
-            INSERT INTO students (name, ulearnID, studentGroup, totalScore, maxTotalScore, age, exerciseScore, homeworkScore, quizScore)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO students (name, ulearnID, studentGroup, totalScore, age, exerciseScore, homeworkScore, quizScore)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
 
@@ -72,11 +72,10 @@ public class DBRepository {
                 pstmt.setString(2, student.getUlearnId());
                 pstmt.setString(3, student.getGroup());
                 pstmt.setInt(4, student.getTotalScore());
-                pstmt.setInt(5, student.getMaxTotalScore());
-                pstmt.setString(6, student.getAge());
-                pstmt.setInt(7, student.getExerciseScore());
-                pstmt.setInt(8, student.getHomeworkScore());
-                pstmt.setInt(9, student.getQuizScore());
+                pstmt.setString(5, student.getAge());
+                pstmt.setInt(6, student.getExerciseScore());
+                pstmt.setInt(7, student.getHomeworkScore());
+                pstmt.setInt(8, student.getQuizScore());
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
@@ -99,14 +98,13 @@ public class DBRepository {
                 String ulearnID = rs.getString("ulearnID");
                 String studentGroup = rs.getString("studentGroup");
                 int totalScore = rs.getInt("totalScore");
-                int maxTotalScore = rs.getInt("maxTotalScore");
                 String age = rs.getString("age");
                 int exerciseScore = rs.getInt("exerciseScore");
                 int homeworkScore = rs.getInt("homeworkScore");
                 int quizScore = rs.getInt("quizScore");
 
                 // Создаем объект Student и добавляем его в список
-                Student student = new Student(name, ulearnID, studentGroup, totalScore, maxTotalScore, age, exerciseScore, homeworkScore, quizScore);
+                Student student = new Student(name, ulearnID, studentGroup, totalScore, age, exerciseScore, homeworkScore, quizScore);
                 students.add(student);
 
             }
