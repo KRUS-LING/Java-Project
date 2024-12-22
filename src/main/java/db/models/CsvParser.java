@@ -1,11 +1,9 @@
-package csvParser;
+package db.models;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
-import models.Student;
-import models.Topic;
 import vkAPI.VkApiSearch;
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,6 +16,7 @@ public class CsvParser {
     public static String Exercise;
 
     public static List<Student> CSVToStudents(String filePath) throws IOException, CsvException {
+
         List<Student> students = new ArrayList<>();
         List<String> topicNames = new ArrayList<>();
         List<Integer> topicIndex = new ArrayList<>();
@@ -154,9 +153,6 @@ public class CsvParser {
                     }
                 }
             }
-
-            student.addTopic(new Topic(topicName, scores[0], scores[1], scores[2],
-                    maxScores[0], maxScores[1], maxScores[2]));
 
             student.setExerciseScore(totalExercisePoints);
             student.setHomeworkScore(totalHomeworkPoints);

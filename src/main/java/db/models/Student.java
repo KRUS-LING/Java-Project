@@ -1,37 +1,52 @@
-package models;
+package db.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
-
+@DatabaseTable(tableName = "students")
 public class Student {
-    private final String name;
-    private final String ulearnID;
-    private final String group;
-    private final String age;
-    private final int totalScore;
-    private final List<Topic> topics;
+
+    @DatabaseField(generatedId = true)
+    private int id;
+
+    @DatabaseField(canBeNull = false)
+    private String name;
+
+    @DatabaseField
+    private String ulearnID;
+
+    @DatabaseField
+    private String group;
+
+    @DatabaseField
+    private int totalScore;
+
+    @DatabaseField
+    private String age;
+
+    @DatabaseField
     private int exerciseScore;
+
+    @DatabaseField
     private int homeworkScore;
+
+    @DatabaseField
     private int quizScore;
 
-
-
-    public Student(String name, String ulearnId, String group, int score, String age,
-                   int exerciseScore, int homeworkScore, int quizScore) {
-        this.ulearnID = ulearnId;
-        this.name = name;
-        this.group = group;
-        this.totalScore = score;
-        this.age = age;
-        this.topics = new ArrayList<>();
-        this.exerciseScore = 0;
-        this.homeworkScore = 0;
-        this.quizScore = 0;
+    // Конструктор по умолчанию для ORMLite
+    public Student() {
     }
 
-    public void addTopic(Topic topic) {
-        this.topics.add(topic);
+    public Student(String name, String ulearnID, String group, int totalScore, String age,
+                   int exerciseScore, int homeworkScore, int quizScore) {
+        this.name = name;
+        this.ulearnID = ulearnID;
+        this.group = group;
+        this.totalScore = totalScore;
+        this.age = age;
+        this.exerciseScore = exerciseScore;
+        this.homeworkScore = homeworkScore;
+        this.quizScore = quizScore;
     }
 
     public String getName() {
@@ -85,14 +100,11 @@ public class Student {
                 .append("\nUlearnID: ").append(getUlearnId())
                 .append("\nГруппа: ").append(getGroup())
                 .append("\nБалл за курс: ").append(getTotalScore())
-//                .append("\nБаллы за упражнения: ").append(getExerciseScore())
-//                .append("\nБаллы за домашнее задание: ").append(getHomeworkScore())
-//                .append("\nБаллы за контрольные вопросы: ").append(getQuizScore())
-                .append("\nВозраст: ").append(getAge()).append("\n");
-//        sb.append("\nТемы:\n");
-//        for (Topic topic : topics) {
-//            sb.append("\t").append(topic.toString()).append("\n");
-//        }
+                .append("\nВозраст: ").append(getAge())
+                .append("\nБалл за упражнения: ").append(getExerciseScore())
+                .append("\nБалл за практики: ").append(getHomeworkScore())
+                .append("\nБалл за контрольные вопросы: ").append(getQuizScore()).append("\n");
+
         return sb.toString();
     }
 }
