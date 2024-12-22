@@ -1,6 +1,5 @@
 package visualisation;
 
-import db.models.Student;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -12,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.NumberFormat;
 import java.util.List;
+import db.models.Student;
 
 public class PieChartDrawer {
 
@@ -27,8 +27,10 @@ public class PieChartDrawer {
                         && !s.getAge().equals("дата рождения не указана")
                         && !s.getAge().equals("пользователь не найден или не зарегистрирован в вк"))
                 .count();
+
         // Дата не указана или без года
         long withoutAge = students.stream().filter(s -> s.getAge().equals("дата рождения не указана")).count();
+
         // Не найден в вк
         long notFound = students.stream().filter(s -> s.getAge().equals("пользователь не найден или не зарегистрирован в вк")).count();
 

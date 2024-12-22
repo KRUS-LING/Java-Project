@@ -1,13 +1,12 @@
 package visualisation;
 
 import db.DBRepository;
+import db.DbOrmRepository;
 import db.models.Student;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,22 +15,21 @@ public class MainWindow {
 
     private static final Color defaultColor = new Color(151, 172, 209);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+        var dbOrm = new DbOrmRepository();
+
         // Подключаемся к базе данных
-        DBRepository.connect();
+        dbOrm.connect();
 
         try {
             // Получаем студентов из базы данных
-            List<Student> studentsFromDB = DBRepository.getStudents();
+            List<Student> studentsFromDB = dbOrm.getStudents();
 
             // Фильтруем студентов, у которых указан возраст
-            List<Student> studentsWithAge = studentsFromDB.stream()
-                    .filter(student -> !student.getAge().isEmpty()
-                            && !student.getAge().equals("дата рождения не указана")
-                            && !student.getAge().equals("пользователь не найден или не зарегистрирован в вк"))
-                    .collect(Collectors.toList());
+            List<Student> studentsWithAge = filterStudentsWithValidAge(studentsFromDB);
 
-            // Проверяем, сколько студентов с указанным возрастом
+            // Сколько студентов с указанным возрастом
             System.out.println("Количество студентов с указанным возрастом: " + studentsWithAge.size());
 
             // Создаем главное окно
@@ -90,21 +88,15 @@ public class MainWindow {
             JOptionPane.showMessageDialog(null, "Произошла ошибка: " + e.getMessage());
         } finally {
             // Закрываем соединение с базой данных
-            DBRepository.disconnect();
+            dbOrm.disconnect();
         }
     }
 
-    private static void addHoverEffect(RoundedButton button, Color hoverColor, Color defaultColor) {
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(hoverColor);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(defaultColor);
-            }
-        });
+    private static List<Student> filterStudentsWithValidAge(List<Student> students) {
+        return students.stream()
+                .filter(student -> !student.getAge().isEmpty()
+                        && !student.getAge().equals("дата рождения не указана")
+                        && !student.getAge().equals("пользователь не найден или не зарегистрирован в вк"))
+                .collect(Collectors.toList());
     }
 }

@@ -1,24 +1,48 @@
 package db.models;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "students")
 public class Student {
-    private final String name;
-    private final String ulearnID;
-    private final String group;
-    private final String age;
-    private final int totalScore;
-    private final int exerciseScore;
-    private final int homeworkScore;
-    private final int quizScore;
 
+    @DatabaseField(generatedId = true)
+    private int id;
 
+    @DatabaseField(canBeNull = false)
+    private String name;
 
-    public Student(String name, String ulearnId, String group, int score, String age,
+    @DatabaseField
+    private String ulearnID;
+
+    @DatabaseField
+    private String group;
+
+    @DatabaseField
+    private int totalScore;
+
+    @DatabaseField
+    private String age;
+
+    @DatabaseField
+    private int exerciseScore;
+
+    @DatabaseField
+    private int homeworkScore;
+
+    @DatabaseField
+    private int quizScore;
+
+    // Конструктор по умолчанию для ORMLite
+    public Student() {
+    }
+
+    public Student(String name, String ulearnID, String group, int totalScore, String age,
                    int exerciseScore, int homeworkScore, int quizScore) {
-        this.ulearnID = ulearnId;
         this.name = name;
+        this.ulearnID = ulearnID;
         this.group = group;
-        this.totalScore = score;
+        this.totalScore = totalScore;
         this.age = age;
         this.exerciseScore = exerciseScore;
         this.homeworkScore = homeworkScore;
@@ -55,6 +79,18 @@ public class Student {
 
     public int getQuizScore() {
         return quizScore;
+    }
+
+    public void setExerciseScore(int exerciseScore) {
+        this.exerciseScore = exerciseScore;
+    }
+
+    public void setHomeworkScore(int homeworkScore) {
+        this.homeworkScore = homeworkScore;
+    }
+
+    public void setQuizScore(int quizScore) {
+        this.quizScore = quizScore;
     }
 
     @Override
